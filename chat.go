@@ -51,7 +51,8 @@ type Attachment struct {
 
 	ImageURL string `json:"image_url,omitempty"`
 
-	Fields []AttachmentField `json:"fields,omitempty"`
+	Fields     []AttachmentField `json:"fields,omitempty"`
+	MarkdownIn []string          `json:"mrkdwn_in,omitempty"`
 }
 
 // PostMessageParameters contains all the parameters necessary (including the optional ones) for a PostMessage() request
