@@ -174,14 +174,14 @@ func (api *SlackWS) handleEvent(ch chan SlackEvent, event json.RawMessage) {
 	em := Event{}
 	err := json.Unmarshal(event, &em)
 	if err != nil {
-		log.Fatal(err)
+		log.Println("could not unmarshal event, ", err.Error())
 	}
 	switch em.Type {
 	case "":
 		// try ok
 		ack := AckMessage{}
 		if err = json.Unmarshal(event, &ack); err != nil {
-			log.Fatal(err)
+			log.Println("could not unmarshal ack event, ", err.Error())
 		}
 
 		if ack.Ok {
@@ -198,7 +198,7 @@ func (api *SlackWS) handleEvent(ch chan SlackEvent, event json.RawMessage) {
 	case "pong":
 		pong := Pong{}
 		if err = json.Unmarshal(event, &pong); err != nil {
-			log.Fatal(err)
+			log.Println("could not unmarshal pong event, ", err.Error())
 		}
 		api.mutex.Lock()
 		latency := time.Since(api.pings[pong.ReplyTo])
@@ -285,7 +285,7 @@ func callEvent(eventType string, ch chan SlackEvent, event json.RawMessage) {
 		log.Printf("XXX: Not implemented yet: %s -> %v", eventType, event)
 	}
 	if err := json.Unmarshal(event, &msg); err != nil {
-		log.Fatal(err)
+		log.Printf("could not unmarshal type %v event, %s", eventType, err.Error())
 	}
 	ch <- SlackEvent{Data: msg}
 }
